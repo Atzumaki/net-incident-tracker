@@ -13,6 +13,7 @@ class ReportCreate(BaseModel):
 
 class ReportRead(BaseModel):
     id: int
+    incident_id: int | None
     address: str
     issue_type: IssueType
     description: str | None

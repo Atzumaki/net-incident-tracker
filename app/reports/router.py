@@ -7,6 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.database import get_session
 from app.reports.model import Report
 from app.reports.schemas import ReportCreate, ReportRead
+from app.reports.service import create_report_with_grouping
 
 router = APIRouter(prefix="/reports", tags=["reports"])
 
@@ -16,13 +17,7 @@ async def create_report(
     data: ReportCreate,
     session: AsyncSession = Depends(get_session),
 ) -> Report:
-    report = Report(**data.model_dump())
-
-    session.add(report)
-    await session.commit()
-    await session.refresh(report)
-
-    return report
+    return await create_report_with_grouping(data, session)
 
 
 @router.get("", response_model=list[ReportRead])

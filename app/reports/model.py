@@ -1,7 +1,7 @@
 from datetime import datetime
 from enum import StrEnum
 
-from sqlalchemy import DateTime, Enum, String, Text, func
+from sqlalchemy import DateTime, Enum, ForeignKey, String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.core.database import Base
@@ -17,6 +17,7 @@ class Report(Base):
     __tablename__ = "reports"
 
     id: Mapped[int] = mapped_column(primary_key=True)
+    incident_id: Mapped[int | None] = mapped_column(ForeignKey("incidents.id"), nullable=True, index=True)
     address: Mapped[str] = mapped_column(String(255), index=True)
     issue_type: Mapped[IssueType] = mapped_column(Enum(IssueType), index=True)
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
